@@ -1,0 +1,12 @@
+// .vscode/settings.json
+// This file is used to configure the VSCode settings for the project
+// It is used to ignore the files that are "Live Server's hot reload feature causes the page to refresh when the proof file is created"
+//Live Server Settings: If using VS Code's Live Server, add the following to your settings to prevent page refreshes during proof generation:
+
+{
+    "liveServer.settings.ignoreFiles": [
+      "**/*.bin",
+      "**/proof_*.json",
+      "**/memory_proof/**"
+    ]
+  }

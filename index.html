@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SP1 Memory Game</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #440e43;
+            overflow: hidden;
+        }
+        
+        #loading {
+            font-size: 24px;
+            color: white;
+            text-align: center;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .spinner {
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 5px solid #2ecc71;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        #game-container {
+            transition: opacity 0.5s ease-in-out;
+            opacity: 0;
+        }
+        
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        
+        .game-title {
+            text-align: center;
+            color: white;
+            font-size: 36px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* SP1 Terminal Styles */
+        #sp1-terminal {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: calc(100% - 40px);
+            max-width: 1024px;
+            height: 200px;
+            background-color: rgba(0, 0, 0, 0.85);
+            color: #fe11c5;
+            border-radius: 8px;
+            font-family: monospace;
+            padding: 10px;
+            overflow-y: auto;
+            display: none;
+            z-index: 100;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            border: 1px solid #2ecc71;
+        }
+        
+        #terminal-output {
+            white-space: pre-wrap;
+            height: calc(100% - 50px);
+            overflow-y: auto;
+        }
+        
+        .sp1-info {
+            background-color: rgba(41, 128, 185, 0.2);
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        #sound-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 1000;
+            border: none;
+        }
+        
+        #sound-toggle img {
+            width: 20px;
+            height: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sound on/off button -->
+    <button id="sound-toggle">
+        <img src="assets/images/sound-on.png" alt="Sound" id="sound-icon">
+    </button>
+    
+    <div id="loading">
+        <div class="game-title">SP1 Memory Game</div>
+        <div class="spinner"></div>
+        <p>Loading the game...</p>
+    </div>
+    
+    <!-- Start screen -->
+    <div id="start-screen" style="position: absolute; width: 1024px; height: 768px; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 100; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+        <div style="width: 1024px; height: 768px; position: relative;">
+            <!-- Start screen background (GIF) -->
+            <img src="assets/images/start-screen.gif" alt="Start Screen" style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;">
+            
+            <!-- Start game button - centered at bottom -->
+            <button id="start-game-button" style="position: absolute; bottom: 100px; left: 50%; transform: translateX(-50%); padding: 20px 40px; font-size: 24px; background-color: #440e43; color: white; border: none; border-radius: 10px; cursor: pointer; z-index: 10; box-shadow: 0 4px 8px rgba(0,0,0,0.3);">
+                Start Game
+            </button>
+        </div>
+    </div>
+    
+    <!-- SP1 Bridge JavaScript import -->
+    <script src="sp1-bridge.js"></script>
+    
+    <script type="module">
+        // Load WASM module
+        import init, { initialize_game, start_game_from_js, log_to_proof_area, show_sp1_proof_result, toggle_sound, play_sound } from './pkg/memory_game_sp1.js';
+        
+        async function run() {
+            // Check if asset folders exist
+            const checkAssetsFolders = async () => {
+                try {
+                    // simple check - you can add more checks in a real project
+                    const imagePath = 'assets/images/card-back.png';
+                    const response = await fetch(imagePath, { method: 'HEAD' });
+                    
+                    if (!response.ok) {
+                        showFolderWarning();
+                        return false;
+                    }
+                    
+                    return true;
+                } catch (error) {
+                    showFolderWarning();
+                    return false;
+                }
+            };
+            
+            const showFolderWarning = () => {
+                const loading = document.getElementById('loading');
+                loading.innerHTML = `
+                    <div class="game-title">SP1 Memory Game</div>
+                    <p style="color: #e74c3c; font-weight: bold;">Error: Asset files not found!</p>
+                    <p>Please create the following folder structure:</p>
+                    <pre style="text-align: left; background: #34495e; padding: 15px; color: #ecf0f1; border-radius: 5px;">
+memory_game/
+├── assets/
+│   ├── images/
+│   │   ├── background.gif
+│   │   ├── card-back.png
+│   │   ├── card-0.png
+│   │   ├── card-1.png
+│   │   └── ...
+│   └── sounds/
+</pre>
+                `;
+            };
+            
+            // Initialize WASM module
+            await init();
+            
+            // Check asset folders
+            await checkAssetsFolders();
+            
+            // Remove loading message
+            const loadingElement = document.getElementById('loading');
+            
+            // Initialize the game
+            initialize_game();
+            
+            // Show game container
+            setTimeout(() => {
+                const gameContainer = document.getElementById('game-container');
+                if (gameContainer) {
+                    gameContainer.style.opacity = '1';
+                    // Hide loading screen
+                    loadingElement.style.display = 'none';
+                }
+            }, 1000);
+            
+            // Define global functions (for HTML button access)
+            window.startGame = start_game_from_js;
+            window.log_to_proof_area = log_to_proof_area;
+            window.show_sp1_proof_result = show_sp1_proof_result;
+            window.toggle_sound = toggle_sound;
+            window.play_sound = play_sound;
+            
+            console.log("SP1 Memory Game ready!");
+        }
+        
+        run().catch(error => {
+            console.error("Error loading the game:", error);
+            document.getElementById('loading').innerHTML = `
+                <div class="game-title">SP1 Memory Game</div>
+                <p style="color: #e74c3c; font-weight: bold;">Error: A problem occurred while loading the game!</p>
+                <p>${error.message || 'Unknown error.'}</p>
+                <button onclick="location.reload()" style="padding: 10px 20px; background-color: #3498db; border: none; color: white; border-radius: 5px; cursor: pointer;">Try Again</button>
+            `;
+        });
+    </script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show start screen
+            const startScreen = document.getElementById('start-screen');
+            if (startScreen) {
+                startScreen.style.display = 'flex';
+            }
+            
+            // Hide game area
+            const gameContainer = document.getElementById('game-container');
+            if (gameContainer) {
+                gameContainer.style.display = 'none';
+            }
+            
+            // Add click event to start button
+            const startButton = document.getElementById('start-game-button');
+            if (startButton) {
+                startButton.addEventListener('click', function() {
+                    // Play sound effect
+                    if (window.play_sound) {
+                        window.play_sound('game-start.mp3');
+                    }
+                    
+                    // Hide start screen
+                    startScreen.style.display = 'none';
+                    
+                    // Show game area
+                    gameContainer.style.display = 'block';
+                    gameContainer.style.opacity = '1';
+                    
+                    // Start the game
+                    if (window.startGame) {
+                        window.startGame();
+                    }
+                });
+            }
+            
+            // Sound control button
+            const soundToggle = document.getElementById('sound-toggle');
+            const soundIcon = document.getElementById('sound-icon');
+            
+            if (soundToggle && soundIcon) {
+                soundToggle.addEventListener('click', function() {
+                    // Call WASM function
+                    if (window.toggle_sound) {
+                        const soundEnabled = window.toggle_sound();
+                        
+                        // Update icon
+                        if (soundEnabled) {
+                            soundIcon.src = 'assets/images/sound-on.png';
+                        } else {
+                            soundIcon.src = 'assets/images/sound-off.png';
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+    
+    <!-- Info panel (Optional) -->
+    <div id="sp1-info" class="sp1-info" style="display: none;">
+        <p><strong>About SP1 ZK Proof</strong></p>
+        <p>This game uses SP1 ZK (Zero Knowledge) technology to prove the validity of your game score. You can generate this proof by clicking the "Prove (SP1)" button at the end of the game.</p>
+    </div>
+</body>
+</html>

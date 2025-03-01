@@ -1,0 +1,17 @@
+{
+  "name": "memory-game-sp1-backend",
+  "version": "1.0.0",
+  "description": "Backend for SP1 Memory Game with ZK-proof integration",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": ["sp1", "zero-knowledge-proofs", "zkvm", "memory-game"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
+  }
+}

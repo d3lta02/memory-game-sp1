@@ -1,0 +1,32 @@
+# Rust
+target/
+**/*.rs.bk
+Cargo.lock
+
+# Node.js
+node_modules/
+npm-debug.log
+.env
+
+# WebAssembly
+pkg/
+
+# Build artifacts
+*.bin
+proof_*.json
+*.o
+*.a
+*.so
+
+# IDE files
+.idea/
+*.iml
+# Allow VSCode settings for important Live Server configuration
+.vscode/*
+!.vscode/settings.json
+
+# Temporary files
+.DS_Store
+*.swp
+*.swo
+temp_*/

@@ -1,0 +1,30 @@
+[package]
+name = "memory-game-sp1"
+version = "0.1.0"
+authors = ["Your Name <your.email@example.com>"]
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+wasm-bindgen = "0.2.87"
+js-sys = "0.3.64"
+web-sys = { version = "0.3.64", features = [
+  "Document",
+  "Element",
+  "HtmlElement",
+  "Node",
+  "Window",
+  "HtmlAudioElement",
+  "console",
+] }
+
+# For memory game features
+wee_alloc = { version = "0.4.5", optional = true }
+
+[dev-dependencies]
+wasm-bindgen-test = "0.3.34"
+
+[profile.release]
+opt-level = "s"
