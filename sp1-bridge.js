@@ -79,7 +79,11 @@ const SP1Bridge = {
         }
     },
     
+<<<<<<< HEAD
     // Proof process simulation (your existing code)
+=======
+    // Proof process simulation
+>>>>>>> c319a59 (Initial commit with Vercel deployment settings and X share button)
     simulateProofProcess: function(gameData) {
         // New score calculation simulation
         const TIME_LIMIT = 120;
@@ -123,7 +127,11 @@ const SP1Bridge = {
         processNextStep();
     },
     
+<<<<<<< HEAD
     // Other functions remain the same...
+=======
+    // Complete the proof process and show the result
+>>>>>>> c319a59 (Initial commit with Vercel deployment settings and X share button)
     completeProof: function(gameData) {
         // Generate proof hash
         const hash = this.generateProofHash(gameData);
@@ -190,9 +198,46 @@ const SP1Bridge = {
                     <span style="font-weight: bold;">Proof Hash:</span> 
                     <span style="font-family: monospace; color: #3498db;">${hash}</span>
                 </div>
+<<<<<<< HEAD
             `;
             
             proofResultDiv.innerHTML = resultHTML;
+=======
+                
+                <!-- Share Button -->
+                <div style="margin-top: 15px; text-align: center;">
+                    <button id="share-x-button" style="
+                        background-color: #000;
+                        color: white;
+                        border: none;
+                        padding: 8px 15px;
+                        border-radius: 20px;
+                        font-weight: bold;
+                        cursor: pointer;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 8px;
+                        margin: 0 auto;
+                    ">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="white">
+                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                        </svg>
+                        Share Score on X
+                    </button>
+                </div>
+            `;
+            
+            proofResultDiv.innerHTML = resultHTML;
+            
+            // Add click event to share button
+            setTimeout(() => {
+                const shareButton = document.getElementById('share-x-button');
+                if (shareButton) {
+                    shareButton.addEventListener('click', () => this.shareOnX(gameData, calculated_score));
+                }
+            }, 100);
+>>>>>>> c319a59 (Initial commit with Vercel deployment settings and X share button)
         }
     },
     
@@ -210,6 +255,22 @@ const SP1Bridge = {
         const randomPart = Math.floor(Math.random() * 0x10000000000000).toString(16).padStart(14, '0');
         
         return `0x${scoreHex}${movesHex}${timeHex}${randomPart}`;
+<<<<<<< HEAD
+=======
+    },
+    
+    // Share score on X (Twitter)
+    shareOnX: function(gameData, score) {
+        const shareText = `I scored ${score} points in Succinct Memory Game. Play it yourself! memory-game-sp1.vercel.app`;
+        const encodedText = encodeURIComponent(shareText);
+        const twitterUrl = `https://twitter.com/intent/tweet?text=${encodedText}`;
+        
+        // Open X sharing page in a new window
+        window.open(twitterUrl, '_blank');
+        
+        // Log the share action
+        console.log("Shared score on X:", score);
+>>>>>>> c319a59 (Initial commit with Vercel deployment settings and X share button)
     }
 };
 

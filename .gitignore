@@ -9,7 +9,11 @@ npm-debug.log
 .env
 
 # WebAssembly
+<<<<<<< HEAD
 pkg/
+=======
+# pkg/  # Including for Vercel deployment
+>>>>>>> c319a59 (Initial commit with Vercel deployment settings and X share button)
 
 # Build artifacts
 *.bin

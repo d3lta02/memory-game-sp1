@@ -1,0 +1,18 @@
+{
+  "name": "memory-game-sp1",
+  "type": "module",
+  "collaborators": [
+    "Your Name <your.email@example.com>"
+  ],
+  "version": "0.1.0",
+  "files": [
+    "memory_game_sp1_bg.wasm",
+    "memory_game_sp1.js",
+    "memory_game_sp1.d.ts"
+  ],
+  "main": "memory_game_sp1.js",
+  "types": "memory_game_sp1.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}

@@ -19,6 +19,15 @@ A classic memory card matching game enhanced with SP1 zero-knowledge proof techn
 - **ZK System**: SP1 (Succinct's zkVM technology)
 - **Languages**: Rust, JavaScript
 
+<<<<<<< HEAD
+=======
+## Deployed Version
+
+This project is deployed on Vercel with simulation mode enabled. memory-game-sp1.vercel.app
+- The deployed version uses simulation mode for proof generation
+- To create real SP1 proofs, clone the repository and follow the installation instructions below
+
+>>>>>>> c319a59 (Initial commit with Vercel deployment settings and X share button)
 ## Prerequisites
 
 - Rust (with nightly toolchain)
@@ -67,8 +76,11 @@ Play the memory game, and after completion, click the "Prove(SP1)" button to gen
 
 ## Important Notes
 
+<<<<<<< HEAD
 ## Important Notes
 
+=======
+>>>>>>> c319a59 (Initial commit with Vercel deployment settings and X share button)
 - **SP1 Proof Generation**: The backend server must be running to generate real SP1 proofs.
 - **Simulation Mode**: If the backend server is not running, the system will fall back to simulation mode.
 
