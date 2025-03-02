@@ -79,11 +79,7 @@ const SP1Bridge = {
         }
     },
     
-<<<<<<< HEAD
-    // Proof process simulation (your existing code)
-=======
     // Proof process simulation
->>>>>>> c319a59 (Initial commit with Vercel deployment settings and X share button)
     simulateProofProcess: function(gameData) {
         // New score calculation simulation
         const TIME_LIMIT = 120;
@@ -127,11 +123,7 @@ const SP1Bridge = {
         processNextStep();
     },
     
-<<<<<<< HEAD
-    // Other functions remain the same...
-=======
     // Complete the proof process and show the result
->>>>>>> c319a59 (Initial commit with Vercel deployment settings and X share button)
     completeProof: function(gameData) {
         // Generate proof hash
         const hash = this.generateProofHash(gameData);
@@ -198,11 +190,6 @@ const SP1Bridge = {
                     <span style="font-weight: bold;">Proof Hash:</span> 
                     <span style="font-family: monospace; color: #3498db;">${hash}</span>
                 </div>
-<<<<<<< HEAD
-            `;
-            
-            proofResultDiv.innerHTML = resultHTML;
-=======
                 
                 <!-- Share Button -->
                 <div style="margin-top: 15px; text-align: center;">
@@ -237,7 +224,6 @@ const SP1Bridge = {
                     shareButton.addEventListener('click', () => this.shareOnX(gameData, calculated_score));
                 }
             }, 100);
->>>>>>> c319a59 (Initial commit with Vercel deployment settings and X share button)
         }
     },
     
@@ -255,8 +241,6 @@ const SP1Bridge = {
         const randomPart = Math.floor(Math.random() * 0x10000000000000).toString(16).padStart(14, '0');
         
         return `0x${scoreHex}${movesHex}${timeHex}${randomPart}`;
-<<<<<<< HEAD
-=======
     },
     
     // Share score on X (Twitter)
@@ -270,7 +254,6 @@ const SP1Bridge = {
         
         // Log the share action
         console.log("Shared score on X:", score);
->>>>>>> c319a59 (Initial commit with Vercel deployment settings and X share button)
     }
 };
 
