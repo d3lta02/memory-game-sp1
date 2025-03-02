@@ -245,7 +245,7 @@ const SP1Bridge = {
     
     // Share score on X (Twitter)
     shareOnX: function(gameData, score) {
-        const shareText = `I scored ${score} points in Succinct Memory Game. Play it yourself! memory-game-sp1.vercel.app`;
+        const shareText = `I scored ${score} points in @SuccinctLabs Memory Game. Play it yourself! memory-game-sp1.vercel.app`;
         const encodedText = encodeURIComponent(shareText);
         const twitterUrl = `https://twitter.com/intent/tweet?text=${encodedText}`;
         
