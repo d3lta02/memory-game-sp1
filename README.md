@@ -35,7 +35,7 @@ This project is deployed on Vercel with simulation mode enabled. memory-game-sp1
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/memory-game-sp1.git
+   git clone https://github.com/d3lta02/memory-game-sp1.git
    cd memory-game-sp1
    ```
 
@@ -71,7 +71,7 @@ This project is deployed on Vercel with simulation mode enabled. memory-game-sp1
     ```
 Play the memory game, and after completion, click the "Prove(SP1)" button to generate a zero-knowledge proof of your score.
 
-Important Notes
+## Important Notes
 
 SP1 Proof Generation: The backend server must be running to generate real SP1 proofs.
 Simulation Mode: If the backend server is not running, the system will fall back to simulation mode.
